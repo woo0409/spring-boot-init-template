@@ -20,7 +20,22 @@ public class NetUtils {
     /**
      * 引入离线IP库
      */
-    private static final Searcher SEARCHER = SpringContextHolder.getBean(Searcher.class);
+    private static Searcher searcher = null;
+
+    /**
+     * 懒加载获取Searcher实例
+     */
+    private static Searcher getSearcher() {
+        if (searcher == null) {
+            try {
+                searcher = SpringContextHolder.getBean(Searcher.class);
+            } catch (Exception e) {
+                log.warn("IP region searcher not available: {}", e.getMessage());
+                searcher = null;
+            }
+        }
+        return searcher;
+    }
 
     /**
      * 通过请求获取客户端可能存在的IP地址
@@ -88,8 +103,12 @@ public class NetUtils {
      * @return 返回地区
      */
     public static String getRegionByIp(String ip) {
+        Searcher searcher = getSearcher();
+        if (searcher == null) {
+            return "Unknown";
+        }
         try {
-            return SEARCHER.search(ip);
+            return searcher.search(ip);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
