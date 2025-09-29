@@ -24,7 +24,6 @@ import top.sharehome.springbootinittemplate.model.entity.File;
 import top.sharehome.springbootinittemplate.model.entity.User;
 import top.sharehome.springbootinittemplate.model.vo.auth.AuthLoginVo;
 import top.sharehome.springbootinittemplate.service.AuthService;
-import top.sharehome.springbootinittemplate.utils.email.EmailUtils;
 import top.sharehome.springbootinittemplate.utils.redisson.KeyPrefixConstants;
 import top.sharehome.springbootinittemplate.utils.redisson.cache.CacheUtils;
 import top.sharehome.springbootinittemplate.utils.satoken.LoginUtils;
@@ -94,7 +93,6 @@ public class AuthServiceImpl extends ServiceImpl<UserMapper, User> implements Au
         String subject = "激活账号";
         String href = domain + ":" + port + (StringUtils.endsWith(contextPath, "/") ? contextPath : contextPath + "/") + "auth/activate/" + uuid;
         String emailContent = "[" + applicationName + "]-点击<a href=\"" + href + "\" target=\"_blank\">链接</a>以激活账号，两小时内有效";
-        EmailUtils.sendWithHtml(authRegisterDto.getEmail(), subject, emailContent);
     }
 
     @Override
@@ -262,7 +260,6 @@ public class AuthServiceImpl extends ServiceImpl<UserMapper, User> implements Au
         if (Objects.equals(expired, 0L)) {
             String subject = "找回密码";
             String emailContent = "[" + applicationName + "]-找回密码验证码为 <b>" + code + "</b> ,五分钟后失效。";
-            EmailUtils.sendWithHtml(userInDatabase.getEmail(), subject, emailContent);
             CacheUtils.putString(emailKey, code, Duration.ofMinutes(5));
         } else {
             throw new CustomizeReturnException(ReturnCode.TOO_MANY_REQUESTS, "请在" + expired + "秒后重试");

@@ -1,7 +1,6 @@
 package top.sharehome.springbootinittemplate.common.base;
 
 import lombok.Getter;
-import top.sharehome.springbootinittemplate.config.i18n.I18nManager;
 
 /**
  * todo 这里主要记录开发者个人的返回码枚举值，模板中扮演的角色是HttpStatus的补充，主要搭配自定义异常和统一返回类一起使用
@@ -301,11 +300,6 @@ public enum ReturnCode {
     ReturnCode(int code, String msg) {
         this.code = code;
         this.msg = msg;
-    }
-
-    public ReturnCode toI18n() {
-        this.msg = I18nManager.getMessage(this.name().toLowerCase().replace("_", "."));
-        return this;
     }
 
 }

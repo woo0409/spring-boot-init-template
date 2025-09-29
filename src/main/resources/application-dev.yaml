@@ -10,22 +10,6 @@ server:
   # 开启Http2，使其能够进行多路复用
   http2:
     enabled: true
-  # 选择Undertow服务器配置
-  undertow:
-    # HTTP post内容的最大大小。当值为-1时，默认值为大小是无限的
-    max-http-post-size: -1
-    # Undertow的URI编码
-    url-charset: UTF-8
-    # 以下的配置会影响buffer,这些buffer会用于服务器连接的IO操作,有点类似netty的池化内存管理
-    # 每块buffer的空间大小,越小的空间被利用越充分
-    buffer-size: 512
-    # 是否分配的直接内存
-    direct-buffers: true
-    threads:
-      # 设置IO线程数, 它主要执行非阻塞的任务,它们会负责多个连接, 默认设置每个CPU核心一个线程
-      io: 16
-      # 阻塞任务线程池, 当执行类似servlet请求阻塞操作, Undertow会从这个线程池中取得线程,它的值设置取决于系统的负载
-      worker: 256
   # 选择Tomcat服务器配置
   tomcat:
     # Tomcat的URI编码
@@ -49,8 +33,6 @@ knife4j:
     enable-footer: true
     enable-footer-custom: true
     footer-custom-content: Apache License 2.0 | Copyright &copy; 2024 [AntonyCheng](https://github.com/AntonyCheng)
-    enable-home-custom: true
-    home-custom-path: classpath:knife4j/README.md
   # Basic验证
   basic:
     # todo 是否让页面带有Basic验证（如果只是查看api推荐打开，但是如果要在里面调试，推荐关闭，因为basic验证之后会占用请求头的Authorization字段，会导致需要登录验证的接口调用失败，预先关闭）
@@ -85,26 +67,6 @@ logging:
     org.apache.fontbox.ttf: off
     org.dromara.pdf.pdfbox.support.fonts: off
 
-# 纳入SpringBootAdmin监控体系
-management:
-  # 排除一些组件的健康检查，交给开发者自己维护，防止SpringBootAdmin检测导致项目启动报错
-  health:
-    elasticsearch:
-      enabled: false
-    rabbit:
-      enabled: false
-    redis:
-      enabled: false
-    mail:
-      enabled: false
-  # 暴露给SpringBootAdmin监控体系
-  endpoints:
-    enabled-by-default: true
-    web:
-      base-path: /manage
-      exposure:
-        include: '*'
-
 # 公共配置文件
 spring:
   # 项目前置工作 ---- 可自定义
@@ -117,40 +79,6 @@ spring:
     charset: UTF-8
     # Banner 路径
     location: classpath:banner.txt
-  # 配置SpringBootAdmin
-  boot:
-    admin:
-      client:
-        # todo 是否纳入SpringBootAdmin监控体系（预先关闭）
-        enabled: false
-        # SpringBootAdmin地址
-        url: http://127.0.0.1:38077/spring-boot-admin/
-        # SpringBootAdmin账号
-        username: admin
-        # SpringBootAdmin密码
-        password: admin123456
-        # 实例配置
-        instance:
-          # 指定服务实例在注册到Admin服务器时提供给服务器的是IP地址而不是其他类型的主机名（如DNS名称）
-          service-host-type: ip
-          # 指定Admin界面显示的实例名称
-          name: ${spring.application.name}
-          # 指定客户端应用的服务基础URL，当Admin Server需要调用客户端应用的actuator端点或其他API时，会使用这个URL作为前缀
-          service-base-url: http://127.0.0.1:38080
-  # 国际化配置
-  messages:
-    # 默认语言
-    default-locale: zh_cn
-    # 解释：I18n是存放多语言文件目录，messages是文件前缀
-    basename: i18n/messages
-    # 指定国际化文件编码格式
-    encoding: UTF-8
-    # 设置国际化消息缓存有效时间，单位是秒
-    cache-duration: 3600
-    # 找不到与用户区域设置匹配的消息时，将退回系统默认区域设置
-    fallback-to-system-locale: true
-    # 当找不到对应的消息键时，决定是否使用键值本身作为消息返回
-    use-code-as-default-message: true
   # 模板工具配置
   freemarker:
     # todo 是否启动FreeMarker模板引擎
@@ -189,53 +117,6 @@ spring:
   # 不允许bean的定义被覆盖，保证系统稳定，但是某些情况下可能需要反其道而行之，这个由开发者自己定义，默认关闭
   main:
     allow-bean-definition-overriding: false
-  # 邮件配置
-  mail:
-    # todo 是否开启邮件功能（这里的邮件功能指的是模板内增强的邮件工具，预先关闭）
-    enable: false
-    # 发送邮件服务器主机
-    host: smtp.163.com
-    # 发送邮件服务器端口
-    port: 25
-    # 发送邮件的邮箱地址
-    username: xxxxxxxx@163.com
-    # 发送邮件的邮箱验证密码或者授权码
-    password: xxxxxxxx
-    # 邮件默认编码
-    default-encoding: UTF-8
-    # 邮箱通讯协议
-    protocol: smtp
-  # RabbitMQ配置
-  rabbitmq:
-    # todo 是否开启RabbitMQ（预先关闭）
-    enable: false
-    # 获取消息最大等待时间（单位：毫秒）
-    max-await-timeout: 3000
-    # 单机 RabbitMQ IP（单价模式配置和集群模式配置只能存在一个）
-    host: 127.0.0.1
-    # 单机 RabbitMQ 端口
-    port: 5672
-    # 集群RabbitMQ（单价模式配置和集群模式配置只能存在一个）
-    #addresses: 127.0.0.1:5672,127.0.0.1:5673,127.0.0.1:5674
-    # 虚拟主机
-    virtual-host: /
-    # 用户名
-    username: guest
-    # 密码
-    password: guest
-    # 消息确认（ACK）
-    publisher-confirm-type: correlated #确认消息已发送到交换机(Exchange)
-    publisher-returns: true #确认消息已发送到队列(Queue)
-    template:
-      mandatory: true
-    # 是否手动ACK
-    listener:
-      type: simple
-      direct:
-        acknowledge-mode: manual
-      simple:
-        acknowledge-mode: manual
-  # 框架依赖自动配置选择
   autoconfigure:
     exclude:
       # todo 是否开启MongoDB依赖类（如果要启用MongoDB，就将MongoAutoConfiguration注释掉，该配置类一旦被注释，就需要设置MongoDB相关配置，预先关闭）
@@ -244,6 +125,8 @@ spring:
       - org.springframework.boot.autoconfigure.data.redis.RedisAutoConfiguration
       # todo 是否使用Redis搭配SaToken鉴权认证（如果需要，就将RedisAutoConfiguration和SaTokenDaoRedisJackson同时注释掉，预先不使用）
       - cn.dev33.satoken.dao.SaTokenDaoRedisJackson
+      - org.springframework.boot.autoconfigure.data.elasticsearch.ElasticsearchDataAutoConfiguration
+      - org.springframework.boot.autoconfigure.data.elasticsearch.ElasticsearchRepositoriesAutoConfiguration
   data:
     # 系统缓存Redis配置（这里的Redis配置主要用于鉴权认证等模板自带服务的系统缓存服务，要求Redis版本在7.0以上）
     redis:
@@ -283,6 +166,9 @@ spring:
       # 如果不需要用户名和密码，即：uri: mongodb://主机地址:主机端口/默认数据库?authSource=admin&maxPoolSize=50&connectTimeoutMS=30000
       # 如果需要用户名和密码，即：uri: mongodb://用户名:密码@主机地址:主机端口/默认数据库?authSource=admin&maxPoolSize=50&connectTimeoutMS=30000
       uri: mongodb://root:123456@127.0.0.1:27017/init_db?authSource=admin&maxPoolSize=50&connectTimeoutMS=30000
+    elasticsearch:
+      repositories:
+              enabled: false
   # 数据源配置
   datasource:
     # 多数据源
@@ -428,18 +314,6 @@ caffeine:
 
 # 对象存储配置
 oss:
-  # 腾讯云COS配置
-  tencent:
-    # todo 是否开启（预先关闭）
-    enable: false
-    # 地域
-    region: ap-xxxxxxxx
-    # 用户的 SecretId，建议使用子账号密钥，授权遵循最小权限指引，降低使用风险。子账号密钥获取可参见 https://cloud.tencent.com/document/product/598/37140
-    secret-id: xxxxxxxx
-    # 用户的 SecretKey，建议使用子账号密钥，授权遵循最小权限指引，降低使用风险。子账号密钥获取可参见 https://cloud.tencent.com/document/product/598/37140
-    secret-key: xxxxxxxx
-    # 桶名称
-    bucket-name: xxxxxxxx
   # MinIO OSS配置
   minio:
     # todo 是否开启（预先关闭）
@@ -454,31 +328,9 @@ oss:
     secret-key: xxxxxxxx
     # 桶名称
     bucket-name: xxxxxxxx
-  # 阿里云OSS配置
-  ali:
-    # todo 是否开启（预先关闭）
-    enable: false
-    # 域名 以华东1（杭州）为例，Endpoint填写为https://oss-cn-hangzhou.aliyuncs.com。
-    endpoint: https://oss-xx-xxx.aliyuncs.com
-    # 用户的 SecretId
-    secret-id: xxxxxxxx
-    # 用户的 SecretKey
-    secret-key: xxxxxxxx
-    # 桶名称
-    bucket-name: xxxxxxxx
 
 # WebSocket配置
 websocket:
-  # 基于Netty手动实现（难度较大，灵活度较大）
-  netty:
-    # todo 是否开启（预先关闭）
-    enable: false
-    # WebSocket端口，范围只允许为0-65535中的整数
-    port: 39999
-    # BOSS线程组线程数
-    boss-thread: 4
-    # WORKER线程组线程数
-    worker-thread: 16
   # 基于Spring自动实现（难度较小，适配度较大）
   spring:
     # todo 是否开启（预先关闭）
@@ -487,88 +339,6 @@ websocket:
     path: "/websocket"
     # 跨域，设置访问源地址
     allowed-origins: "*"
-
-# SSE配置
-sse:
-  # SSE访问路径（即/sse）
-  path: "sse"
-  # SSE连接超时时间（单位：毫秒），0表示无限制
-  timeout: 0
-
-# Easy-ES配置
-easy-es:
-  # todo 是否启动（预先关闭）
-  enable: false
-  # es连接地址+端口 格式必须为ip:port,如果是集群则可用逗号隔开
-  address: 127.0.0.1:9200
-  ## 如果无账号密码则可不配置此行
-  #username:
-  ## 如果无账号密码则可不配置此行
-  #password:
-  ## 多数据源
-  #dynamic:
-  #  datasource:
-  #    ds1:
-  #      address: 127.0.0.1:9201
-  #      # 如果无账号密码则可不配置此行
-  #      username:
-  #      # 如果无账号密码则可不配置此行
-  #      password:
-  #      #...（以下配置和单数据源类似）
-  #    ds2:
-  #      #...（以下配置和ds1相似）
-  # 默认为http 可缺省
-  schema: http
-  # 打印banner 若您不期望打印banner,可配置为false（预先关闭）
-  banner: false
-  # 心跳策略时间 单位:ms
-  keep-alive-millis: 30000
-  # 连接超时时间 单位:ms
-  connect-timeout: 5000
-  # 通信超时时间 单位:ms
-  socket-timeout: 600000
-  # 连接请求超时时间 单位:ms
-  connection-request-timeout: 5000
-  # 最大连接数 单位:个
-  max-conn-total: 100
-  # 最大连接路由数 单位:个
-  max-conn-per-route: 100
-  global-config:
-    # 索引处理模式,smoothly:平滑模式, not_smoothly:非平滑模式, manual:手动模式,,默认开启此模式
-    process-index-mode: manual
-    # 开启控制台打印通过本框架生成的DSL语句,默认为开启,测试稳定后的生产环境建议关闭,以提升少量性能
-    print-dsl: true
-    # 当前项目是否分布式项目,默认为true,在非手动托管索引模式下,若为分布式项目则会获取分布式锁,非分布式项目只需synchronized锁.
-    distributed: false
-    # 重建索引超时时间 单位小时,默认72H 可根据ES中存储的数据量调整
-    reindexTimeOutHours: 72
-    # 异步处理索引是否阻塞主线程 默认阻塞 数据量过大时调整为非阻塞异步进行 项目启动更快
-    async-process-index-blocking: true
-    db-config:
-      # 是否开启下划线转驼峰 默认为false
-      map-underscore-to-camel-case: false
-      # 索引前缀,可用于区分环境  默认为空 用法和MP的tablePrefix一样的作用和用法
-      index-prefix: template_
-      # id生成策略
-      # 1、customize为自定义，_id值由用户生成，比如取MySQL中的数据id，如缺省此项配置，则_id默认策略为ES自动生成
-      # 2、none为默认策略，由ES自动生成id
-      # 3、uuid为全局唯一策略
-      id-type: none
-      # 数据刷新策略,默认为不刷新,若对数据时效性要求比较高,可以调整为immediate,但性能损耗高,也可以调整为折中的wait_until
-      refresh-policy: immediate
-
-#配置SpringBoot任务调度
-schedule:
-  # 全量任务配置
-  once:
-    # todo 是否开启全量任务（预先关闭）
-    enable: false
-  # 循环任务配置
-  cycle:
-    # todo 是否开启循环任务（预先关闭）
-    enable: false
-    # 线程池大小（开启则必填）
-    thread-pool: 10
 
 # XxlJob配置（如果是导入了模板sql，那么登录账号/密码为：admin/123456）
 xxl:
@@ -593,27 +363,6 @@ xxl:
       logpath: ./logs/xxl-logs/xxl-job
       # 执行器日志文件保存天数：大于3生效
       logretentiondays: 30
-
-# PowerJob配置
-powerjob:
-  worker:
-    # todo 是否开启（预先关闭）
-    enabled: false
-    # 是否允许延迟连接PowerJob服务器（即没有连接上服务器是否终止程序启动）
-    allow-lazy-connect-server: false
-    # 执行器端口
-    port: 38082
-    # 执行器AppName
-    app-name: power-job-executor
-    # PowerJob服务器地址
-    server-address: 127.0.0.1:38078/power-job-admin
-    # 网络传输协议
-    protocol: http
-    # 执行器信息存储介质
-    store-strategy: disk
-    # 处理任务返回结果最大长度
-    max-result-length: 4096
-    max-appended-wf-context-length: 4096
 
 # Sa-Token配置
 sa-token:
@@ -656,42 +405,6 @@ sa-token:
   # 非jwt形式的token风格：uuid 带有中划线的uuid（默认）；simple-uuid 不带有中划线的uuid；random-32 随机32位字符串；random-64 随机64位字符串；random-128 随机128位字符串；tik tik风格。
   token-style: tik
 
-# 离线IP库配置
-ip2region:
-  # 数据加载方式
-  load-type: memory
-
-# 敏感数据配置
-sensitive:
-  # 敏感词
-  word:
-    # 是否忽略大小写
-    is-ignore-case: true
-    # 是否忽略半角圆角
-    is-ignore-width: true
-    # 是否忽略数字的写法
-    is-ignore-num-style: true
-    # 是否忽略中文的书写格式
-    is-ignore-chinese-style: true
-    # 是否忽略英文的书写格式
-    is-ignore-english-style: true
-    # 是否忽略重复词
-    is-ignore-repeat: false
-    # 是否启用数字检测
-    enable-num-check: false
-    # 是否启用邮箱检测
-    enable-email-check: false
-    # 是否启用链接检测
-    enable-url-check: false
-    # 是否启用IPv4检测
-    enable-ipv4-check: false
-    # 是否启用敏感单词检测
-    enable-word-check: true
-    # 是否启用默认黑名单
-    enable-default-denys: false
-    # 数字检测，自定义指定长度
-    num-check-len: 8
-
 # 请求参数加密校验配置
 encrypt:
   # todo 是否使用参数加密校验
@@ -700,21 +413,6 @@ encrypt:
   rsa-key-length: length4096
   # AES 密钥长度（默认32，值越高，安全性越高，效率越低）
   aes-key-length: length32
-
-# 验证码配置
-captcha:
-  # todo 是否使用验证码（启用的前提是redisson配置完成，预先关闭）
-  enable: false
-  # 验证码类型：char 字符类型；math 数字类型。
-  type: char
-  # 验证码类别：line 线段干扰；circle 圆圈干扰；shear 扭曲干扰。
-  category: line
-  # 数字验证码位数（1-9，否则默认为1）
-  number-length: 1
-  # 字符验证码长度（1-99，否则默认为4）
-  char-length: 4
-  # 验证码存活时间（单位：秒）
-  expired: 180
 
 # MyBatisPlus配置
 # https://baomidou.com/config/
@@ -756,3 +454,13 @@ mybatis-plus:
       insert-strategy: not_null
       update-strategy: not_null
       where-strategy: not_null
+powerjob:
+  worker:
+    enabled:
+      false
+management:
+  health:
+    rabbit:
+      enabled: false
+    elasticsearch:
+      enabled: false
