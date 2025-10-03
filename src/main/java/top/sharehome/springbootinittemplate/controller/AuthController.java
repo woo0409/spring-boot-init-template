@@ -51,7 +51,7 @@ public class AuthController {
             throw new CustomizeReturnException(ReturnCode.PASSWORD_AND_SECONDARY_PASSWORD_NOT_SAME);
         }
         authService.register(authRegisterDto);
-        return R.ok("注册成功，请前往邮箱激活账号");
+        return R.ok("注册成功");
     }
 
     /**

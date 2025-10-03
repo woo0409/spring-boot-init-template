@@ -64,7 +64,7 @@ public class AuthServiceImpl extends ServiceImpl<UserMapper, User> implements Au
     @Transactional(rollbackFor = Exception.class)
     public void register(AuthRegisterDto authRegisterDto) {
         LambdaQueryWrapper<User> userLambdaQueryWrapper = new LambdaQueryWrapper<>();
-        userLambdaQueryWrapper.eq(User::getAccount, authRegisterDto.getAccount());
+        userLambdaQueryWrapper.eq(User::getAccount, authRegisterDto.getPhone());
         // 判断用户账户是否已经存在
         if (userMapper.exists(userLambdaQueryWrapper)) {
             throw new CustomizeReturnException(ReturnCode.USERNAME_ALREADY_EXISTS);
@@ -72,9 +72,9 @@ public class AuthServiceImpl extends ServiceImpl<UserMapper, User> implements Au
         // 插入新用户数据
         User user = new User()
                 .setAvatarId(Constants.NULL_ID)
-                .setAccount(authRegisterDto.getAccount())
+                .setAccount(authRegisterDto.getPhone())
                 // 注册之后，默认名称是账号
-                .setName(authRegisterDto.getAccount())
+                .setName(authRegisterDto.getPhone())
                 .setPassword(authRegisterDto.getPassword())
                 .setEmail(authRegisterDto.getEmail())
                 // 在没有激活账号的情况下禁用账号
@@ -83,16 +83,17 @@ public class AuthServiceImpl extends ServiceImpl<UserMapper, User> implements Au
         if (insertResult == 0) {
             throw new CustomizeReturnException(ReturnCode.ERRORS_OCCURRED_IN_THE_DATABASE_SERVICE);
         }
-        // 生成一个随机UUID
+        // 注释邮箱激活功能
+        /*// 生成一个随机UUID
         String uuid = UUID.randomUUID().toString().replace("-", "");
         // 生成激活邮件Key值
         String activateKey = KeyPrefixConstants.EMAIL_REGISTER_ACTIVATE_PREFIX + uuid;
         // 将激活邮件Key设置2小时过期时间
-        CacheUtils.putString(activateKey, authRegisterDto.getAccount(), Duration.ofHours(2));
+        CacheUtils.putString(activateKey, authRegisterDto.getPhone(), Duration.ofHours(2));
         // 给新用户邮箱发送一条激活邮件
         String subject = "激活账号";
         String href = domain + ":" + port + (StringUtils.endsWith(contextPath, "/") ? contextPath : contextPath + "/") + "auth/activate/" + uuid;
-        String emailContent = "[" + applicationName + "]-点击<a href=\"" + href + "\" target=\"_blank\">链接</a>以激活账号，两小时内有效";
+        String emailContent = "[" + applicationName + "]-点击<a href=\"" + href + "\" target=\"_blank\">链接</a>以激活账号，两小时内有效";*/
     }
 
     @Override
@@ -137,7 +138,8 @@ public class AuthServiceImpl extends ServiceImpl<UserMapper, User> implements Au
     public AuthLoginVo login(AuthLoginDto authLoginDto) {
         LambdaQueryWrapper<User> userLambdaQueryWrapper = new LambdaQueryWrapper<>();
         userLambdaQueryWrapper
-                .eq(User::getAccount, authLoginDto.getAccount())
+                .eq(User::getAccount, authLoginDto.getAccount()).or()
+                .eq(User::getEmail, authLoginDto.getAccount()).or()
                 .last("limit 1");
         User userInDatabase = userMapper.selectOne(userLambdaQueryWrapper);
         // 判断数据库中是否存在该登录用户的数据

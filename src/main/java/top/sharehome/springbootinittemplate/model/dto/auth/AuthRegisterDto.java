@@ -13,6 +13,7 @@ import top.sharehome.springbootinittemplate.common.validate.PostGroup;
 import java.io.Serial;
 import java.io.Serializable;
 
+import static top.sharehome.springbootinittemplate.common.base.Constants.REGEX_CHINESE_PHONE_STR;
 import static top.sharehome.springbootinittemplate.common.base.Constants.REGEX_NUMBER_AND_LETTER_STR;
 
 /**
@@ -29,10 +30,10 @@ public class AuthRegisterDto implements Serializable {
     /**
      * 账号
      */
-    @Size(min = 2, max = 16, message = "账号长度介于2-16位之间", groups = {PostGroup.class})
-    @NotBlank(message = "账号不能为空", groups = {PostGroup.class})
-    @Pattern(regexp = REGEX_NUMBER_AND_LETTER_STR, message = "账户名称包含特殊字符", groups = {PostGroup.class})
-    private String account;
+//    @Size(min = 2, max = 16, message = "账号长度介于2-16位之间", groups = {PostGroup.class})
+    @NotBlank(message = "手机不能为空", groups = {PostGroup.class})
+    @Pattern(regexp = REGEX_CHINESE_PHONE_STR, message = "非法手机号", groups = {PostGroup.class})
+    private String phone;
 
     /**
      * 密码
@@ -51,7 +52,7 @@ public class AuthRegisterDto implements Serializable {
      * 邮箱
      */
     @Email(message = "邮箱格式错误", groups = {PostGroup.class})
-    @NotBlank(message = "邮箱不能为空", groups = {PostGroup.class})
+//    @NotBlank(message = "邮箱不能为空", groups = {PostGroup.class})
     private String email;
 
     @Serial
