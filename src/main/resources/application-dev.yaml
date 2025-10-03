@@ -317,17 +317,17 @@ oss:
   # MinIO OSS配置
   minio:
     # todo 是否开启（预先关闭）
-    enable: false
+    enable: true
     # 域名（格式：【ip:port】）
     endpoint: 127.0.0.1:9000
     # 是否开启TLS
     enable-tls: false
     # 用户的 SecretId
-    secret-id: xxxxxxxx
+    secret-id: minioadmin
     # 用户的 SecretKey
-    secret-key: xxxxxxxx
+    secret-key: minioadmin
     # 桶名称
-    bucket-name: xxxxxxxx
+    bucket-name: init-bucket
 
 # WebSocket配置
 websocket:
