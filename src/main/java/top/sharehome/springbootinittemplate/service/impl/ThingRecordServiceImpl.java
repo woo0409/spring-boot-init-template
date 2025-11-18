@@ -1,5 +1,6 @@
 package top.sharehome.springbootinittemplate.service.impl;
 
+import org.springframework.web.bind.annotation.RequestBody;
 import top.sharehome.springbootinittemplate.model.entity.ThingRecordDO;
 import top.sharehome.springbootinittemplate.mapper.ThingRecordMapper;
 import top.sharehome.springbootinittemplate.service.ThingRecordService;
@@ -17,4 +18,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class ThingRecordServiceImpl extends ServiceImpl<ThingRecordMapper, ThingRecordDO> implements ThingRecordService {
 
+    @Override
+    public String addRecord(ThingRecordDO recordDO) {
+        return "yes";
+    }
 }

@@ -319,13 +319,13 @@ oss:
     # todo 是否开启（预先关闭）
     enable: true
     # 域名（格式：【ip:port】）
-    endpoint: 127.0.0.1:9000
+    endpoint: 124.220.216.98:9000
     # 是否开启TLS
     enable-tls: false
     # 用户的 SecretId
-    secret-id: minioadmin
+    secret-id: admin
     # 用户的 SecretKey
-    secret-key: minioadmin
+    secret-key: v20034.9.
     # 桶名称
     bucket-name: init-bucket
 
@@ -427,7 +427,7 @@ mybatis-plus:
   type-handlers-package: top.sharehome.springbootinittemplate.config.ai.spring.vector.handler
   configuration:
     # 自动驼峰命名规则（camel case）映射
-    map-underscore-to-camel-case: false
+    map-underscore-to-camel-case: true
     # MyBatis 自动映射策略
     # NONE 不启用；PARTIAL 只对非嵌套；resultMap 自动映射；FULL 对所有；resultMap 自动映射；
     auto-mapping-behavior: PARTIAL

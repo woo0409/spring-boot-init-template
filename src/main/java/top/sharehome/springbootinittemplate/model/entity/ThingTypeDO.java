@@ -7,6 +7,8 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.Objects;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -36,7 +38,12 @@ public class ThingTypeDO implements Serializable {
     /**
      * 对应积分
      */
-    private Object integral;
+    private Double integral;
+
+    /**
+     * 父类型id
+     */
+    private Long parentId;
 
     /**
      * 创建时间
@@ -49,4 +56,19 @@ public class ThingTypeDO implements Serializable {
      */
     @TableField(fill = FieldFill.INSERT_UPDATE)
     private LocalDateTime updateTime;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        ThingTypeDO that = (ThingTypeDO) o;
+
+        return Objects.equals(id, that.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return id != null ? id.hashCode() : 0;
+    }
 }

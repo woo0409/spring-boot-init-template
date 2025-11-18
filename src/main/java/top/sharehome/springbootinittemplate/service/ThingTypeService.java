@@ -2,6 +2,9 @@ package top.sharehome.springbootinittemplate.service;
 
 import top.sharehome.springbootinittemplate.model.entity.ThingTypeDO;
 import com.baomidou.mybatisplus.extension.service.IService;
+import top.sharehome.springbootinittemplate.model.vo.ThingTypeVO;
+
+import java.util.List;
 
 /**
  * <p>
@@ -13,4 +16,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface ThingTypeService extends IService<ThingTypeDO> {
 
+    List<ThingTypeVO> typeList(String typeName);
+
+    String deleteType(Long id);
 }

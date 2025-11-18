@@ -12,5 +12,5 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * @since 2025-10-13
  */
 public interface ThingRecordService extends IService<ThingRecordDO> {
-
+    String addRecord(ThingRecordDO recordDO);
 }
