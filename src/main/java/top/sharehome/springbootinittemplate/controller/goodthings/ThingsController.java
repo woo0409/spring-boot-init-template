@@ -19,7 +19,6 @@ public class ThingsController {
 
     @PostMapping("/add")
     public R<ThingRecordDO> addRecord(@RequestBody ThingRecordDO recordDO){
-        ThingRecordDO thingRecordDO = new ThingRecordDO();
         return R.ok(thingRecordService.addRecord(recordDO));
     }
 }
