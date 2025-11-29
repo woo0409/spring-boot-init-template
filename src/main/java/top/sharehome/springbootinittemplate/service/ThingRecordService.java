@@ -1,5 +1,7 @@
 package top.sharehome.springbootinittemplate.service;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import top.sharehome.springbootinittemplate.model.dto.ThingDTO;
 import top.sharehome.springbootinittemplate.model.entity.ThingRecordDO;
 import com.baomidou.mybatisplus.extension.service.IService;
 
@@ -12,5 +14,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * @since 2025-10-13
  */
 public interface ThingRecordService extends IService<ThingRecordDO> {
-    String addRecord(ThingRecordDO recordDO);
+    Boolean addRecord(ThingRecordDO recordDO);
+
+    Page<ThingRecordDO> page(ThingDTO thingDTO);
 }

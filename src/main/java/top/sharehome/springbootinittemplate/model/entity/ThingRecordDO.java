@@ -29,9 +29,24 @@ public class ThingRecordDO implements Serializable {
     private Long id;
 
     /**
+     * 好事名称
+     */
+    private String thingName;
+
+    /**
      * 好事类型
      */
     private Long thingType;
+
+    /**
+     * 好事详情
+     */
+    private String thingDetail;
+
+    /**
+     * 状态
+     */
+    private Long status;
 
     /**
      * 做好事用户
@@ -64,4 +79,9 @@ public class ThingRecordDO implements Serializable {
      */
     @TableField(fill = FieldFill.INSERT_UPDATE)
     private LocalDateTime updateTime;
+
+    /**
+     * 发生时间
+     */
+    private LocalDateTime happenTime;
 }

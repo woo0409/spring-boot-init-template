@@ -50,7 +50,7 @@ public class ThingTypeServiceImpl extends ServiceImpl<ThingTypeMapper, ThingType
                 .eq(ThingTypeDO::getParentId, id));
 
         if (exists) {
-            return "存在子节点，请先删除子节点";
+            throw new RuntimeException("存在子节点，请先删除子节点");
         }
         removeById(id);
         return "删除成功";
