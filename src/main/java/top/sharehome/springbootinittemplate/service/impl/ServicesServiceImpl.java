@@ -1,5 +1,6 @@
 package top.sharehome.springbootinittemplate.service.impl;
 
+import top.sharehome.springbootinittemplate.model.dto.ServicesDTO;
 import top.sharehome.springbootinittemplate.model.entity.ServicesDO;
 import top.sharehome.springbootinittemplate.mapper.ServicesMapper;
 import top.sharehome.springbootinittemplate.service.ServicesService;
@@ -17,4 +18,9 @@ import org.springframework.stereotype.Service;
 @Service
 public class ServicesServiceImpl extends ServiceImpl<ServicesMapper, ServicesDO> implements ServicesService {
 
+    @Override
+    public Boolean addOrUpdate(ServicesDTO servicesDO) {
+
+        return null;
+    }
 }

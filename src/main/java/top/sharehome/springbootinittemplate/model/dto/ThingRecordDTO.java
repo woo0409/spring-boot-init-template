@@ -1,14 +1,11 @@
-package top.sharehome.springbootinittemplate.model.entity;
+package top.sharehome.springbootinittemplate.model.dto;
 
-import com.baomidou.mybatisplus.annotation.FieldFill;
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
-import java.io.Serializable;
-import java.time.LocalDateTime;
+import com.baomidou.mybatisplus.annotation.*;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.io.Serializable;
+import java.time.LocalDateTime;
 
 /**
  * <p>
@@ -20,12 +17,7 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-@TableName("thing_record")
-public class ThingRecordDO implements Serializable {
-
-    private static final long serialVersionUID = 1L;
-
-    @TableId(value = "id", type = IdType.AUTO)
+public class ThingRecordDTO {
     private Long id;
 
     /**
@@ -36,7 +28,13 @@ public class ThingRecordDO implements Serializable {
     /**
      * 好事类型
      */
-    private Long thingType;
+    private String thingType;
+
+    /**
+     * 好事类型Id
+     */
+    private Long thingTypeId;
+
 
     /**
      * 好事详情
@@ -46,7 +44,7 @@ public class ThingRecordDO implements Serializable {
     /**
      * 状态
      */
-    private Integer status;
+    private Long status;
 
     /**
      * 做好事用户

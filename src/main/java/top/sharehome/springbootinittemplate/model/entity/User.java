@@ -95,6 +95,11 @@ public class User implements Serializable {
     @TableLogic
     private Integer deleted;
 
+    /**
+     * 积分
+     */
+    private Double integral;
+
     @Serial
     private static final long serialVersionUID = -5943787044496569074L;
 

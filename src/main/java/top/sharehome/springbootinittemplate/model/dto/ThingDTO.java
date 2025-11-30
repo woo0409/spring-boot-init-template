@@ -15,4 +15,7 @@ public class ThingDTO extends PageModel {
     @Schema(description = "状态")
     private Long status;
 
+    @Schema(description = "用户Id")
+    private Long userId;
+
 }

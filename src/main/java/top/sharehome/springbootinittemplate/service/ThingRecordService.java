@@ -17,4 +17,6 @@ public interface ThingRecordService extends IService<ThingRecordDO> {
     Boolean addRecord(ThingRecordDO recordDO);
 
     Page<ThingRecordDO> page(ThingDTO thingDTO);
+
+    Boolean audit(Integer status, Long thingId);
 }

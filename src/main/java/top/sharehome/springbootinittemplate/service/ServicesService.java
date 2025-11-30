@@ -1,7 +1,8 @@
 package top.sharehome.springbootinittemplate.service;
 
-import top.sharehome.springbootinittemplate.model.entity.ServicesDO;
 import com.baomidou.mybatisplus.extension.service.IService;
+import top.sharehome.springbootinittemplate.model.dto.ServicesDTO;
+import top.sharehome.springbootinittemplate.model.entity.ServicesDO;
 
 /**
  * <p>
@@ -12,5 +13,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * @since 2025-10-13
  */
 public interface ServicesService extends IService<ServicesDO> {
+
+    Boolean addOrUpdate(ServicesDTO servicesDO);
 
 }

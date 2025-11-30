@@ -1,14 +1,11 @@
-package top.sharehome.springbootinittemplate.model.entity;
+package top.sharehome.springbootinittemplate.model.dto;
 
-import com.baomidou.mybatisplus.annotation.FieldFill;
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
-import java.io.Serializable;
-import java.time.LocalDateTime;
+import com.baomidou.mybatisplus.annotation.*;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.io.Serializable;
+import java.time.LocalDateTime;
 
 /**
  * <p>
@@ -20,12 +17,7 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-@TableName("services")
-public class ServicesDO implements Serializable {
-
-    private static final long serialVersionUID = 1L;
-
-    @TableId(value = "id", type = IdType.AUTO)
+public class ServicesDTO {
     private Long id;
 
     /**
@@ -49,6 +41,11 @@ public class ServicesDO implements Serializable {
     private Integer remaining;
 
     /**
+     * 文件id
+     */
+    private Long fileId;
+
+    /**
      * 创建人
      */
     @TableField(fill = FieldFill.INSERT)
@@ -59,11 +56,6 @@ public class ServicesDO implements Serializable {
      */
     @TableField(fill = FieldFill.INSERT)
     private LocalDateTime createTime;
-
-    /**
-     * 文件id
-     */
-    private Long fileId;
 
     /**
      * 更新时间
