@@ -93,10 +93,11 @@ public class FileServiceImpl extends ServiceImpl<FileMapper, File> implements Fi
     }
 
     @Override
-    public void addFile(MultipartFile file) {
+    public Long addFile(MultipartFile file) {
         String date = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd"));
         String filePath = "file/" + date;
-        MinioUtils.upload(file, filePath);
+        File upload = MinioUtils.upload(file, filePath);
+        return upload.getId();
     }
 
     /**

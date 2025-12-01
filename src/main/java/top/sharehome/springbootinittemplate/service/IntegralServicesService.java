@@ -13,4 +13,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface IntegralServicesService extends IService<IntegralServicesDO> {
 
+    Boolean exchange(Long serviceId);
+
+    Boolean serviceAudit(Integer status, Long serviceId);
 }

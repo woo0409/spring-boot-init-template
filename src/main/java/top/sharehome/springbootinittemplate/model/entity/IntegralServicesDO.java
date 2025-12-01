@@ -59,4 +59,9 @@ public class IntegralServicesDO implements Serializable {
      * 审核人
      */
     private Long auditId;
+
+    /**
+     * 花费积分
+     */
+    private Double integral;
 }

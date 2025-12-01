@@ -46,5 +46,5 @@ public interface FileService extends IService<File> {
      *
      * @param file 被添加文件
      */
-    void addFile(MultipartFile file);
+    Long addFile(MultipartFile file);
 }

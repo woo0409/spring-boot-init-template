@@ -1,12 +1,12 @@
 package top.sharehome.springbootinittemplate.controller.service;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import top.sharehome.springbootinittemplate.common.base.R;
 import top.sharehome.springbootinittemplate.model.dto.ServicesDTO;
+import top.sharehome.springbootinittemplate.model.entity.ServicesDO;
+import top.sharehome.springbootinittemplate.service.IntegralServicesService;
 import top.sharehome.springbootinittemplate.service.ServicesService;
 
 @RestController
@@ -14,9 +14,21 @@ import top.sharehome.springbootinittemplate.service.ServicesService;
 public class ServiceController {
     @Autowired
     private ServicesService servicesService;
+    @Autowired
+    private IntegralServicesService integralServicesService;
 
     @PostMapping("/addOrUpdate")
-    public R<Boolean> addOrUpdate(@RequestBody ServicesDTO servicesDO) {
-        return R.ok(servicesService.addOrUpdate(servicesDO));
+    public R<Boolean> addOrUpdate(@RequestBody ServicesDTO servicesDTO) {
+        return R.ok(servicesService.addOrUpdate(servicesDTO));
+    }
+
+    @PostMapping("/page")
+    public R<Page<ServicesDO>> page(@RequestBody ServicesDTO servicesDTO) {
+        return R.ok(servicesService.getPage(servicesDTO));
+    }
+
+    @GetMapping("/exchange/{serviceId}")
+    public R<Boolean> exchange(@PathVariable("serviceId") Long serviceId) {
+        return R.ok(integralServicesService.exchange(serviceId));
     }
 }

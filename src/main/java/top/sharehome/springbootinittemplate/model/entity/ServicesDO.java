@@ -34,9 +34,14 @@ public class ServicesDO implements Serializable {
     private String serviceName;
 
     /**
+     * 服务描述
+     */
+    private String serviceDetail;
+
+    /**
      * 所需积分
      */
-    private Object serviceIntegral;
+    private Double serviceIntegral;
 
     /**
      * 总量

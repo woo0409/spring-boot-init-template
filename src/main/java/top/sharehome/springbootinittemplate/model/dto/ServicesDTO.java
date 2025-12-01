@@ -3,6 +3,7 @@ package top.sharehome.springbootinittemplate.model.dto;
 import com.baomidou.mybatisplus.annotation.*;
 import lombok.Getter;
 import lombok.Setter;
+import top.sharehome.springbootinittemplate.model.common.PageModel;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -17,7 +18,7 @@ import java.time.LocalDateTime;
  */
 @Getter
 @Setter
-public class ServicesDTO {
+public class ServicesDTO extends PageModel {
     private Long id;
 
     /**
@@ -28,7 +29,7 @@ public class ServicesDTO {
     /**
      * 所需积分
      */
-    private Object serviceIntegral;
+    private Double serviceIntegral;
 
     /**
      * 总量

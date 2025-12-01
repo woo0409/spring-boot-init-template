@@ -72,13 +72,13 @@ public class FileController {
     @PostMapping("/add")
     @ControllerLog(description = "管理员添加文件信息", operator = Operator.INSERT)
     @SaCheckRole(value = {Constants.ROLE_ADMIN})
-    public R<String> addFile(@Validated({PostGroup.class}) FileAddDto fileAddDto) {
+    public R<Long> addFile(@Validated({PostGroup.class}) FileAddDto fileAddDto) {
         MultipartFile file = fileAddDto.getFile();
         if (file.getSize() == 0 || file.getSize() > FILE_MAX_SIZE) {
             throw new CustomizeReturnException(ReturnCode.USER_UPLOADED_FILE_IS_TOO_LARGE, "文件不得大于10MB");
         }
-        fileService.addFile(file);
-        return R.ok("添加成功");
+        Long fileId = fileService.addFile(file);
+        return R.ok(fileId);
     }
 
     /**

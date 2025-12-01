@@ -62,7 +62,7 @@ public class ThingRecordServiceImpl extends ServiceImpl<ThingRecordMapper, Thing
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public Boolean audit(Integer status, Long thingId) {
+    public Boolean thingAudit(Integer status, Long thingId) {
         // 1. 使用更具体的异常和校验
         ThingRecordDO record = this.getById(thingId);
         if (record == null) {

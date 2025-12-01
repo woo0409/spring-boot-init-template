@@ -5,7 +5,7 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public enum ThingRecordTypeEnum {
+public enum StatusEnum {
     AUDITING(1, "审核中"),
     AUDIT_FAIL(2, "审核失败"),
     AUDIT_SUCCESS(3, "审核通过"),
@@ -15,7 +15,7 @@ public enum ThingRecordTypeEnum {
     private final String msg;
 
     public static String getMsgByCode(int code) {
-        for (ThingRecordTypeEnum value : ThingRecordTypeEnum.values()) {
+        for (StatusEnum value : StatusEnum.values()) {
             if (value.code == code) {
                 return value.msg;
             }
