@@ -41,7 +41,7 @@ public class IntegralServicesServiceImpl extends ServiceImpl<IntegralServicesMap
 
         AuthLoginVo user = LoginUtils.getLoginUserOrThrow();
         if (user.getIntegral() < servicesDO.getServiceIntegral()) {
-            throw new RuntimeException("无法兑换该服务");
+            throw new RuntimeException("积分不足，无法兑换该服务");
         }
 
         IntegralServicesDO integralServicesDO = new IntegralServicesDO();
@@ -49,7 +49,9 @@ public class IntegralServicesServiceImpl extends ServiceImpl<IntegralServicesMap
         integralServicesDO.setUserId(user.getId());
         integralServicesDO.setIntegral(servicesDO.getServiceIntegral());
 
-        return this.save(integralServicesDO) & userService.update(Wrappers.<User>lambdaUpdate()
+        servicesDO.setRemaining(servicesDO.getRemaining() - 1);
+
+        return servicesService.updateById(servicesDO) & this.save(integralServicesDO) & userService.update(Wrappers.<User>lambdaUpdate()
                 .set(User::getIntegral, user.getIntegral() - servicesDO.getServiceIntegral())
                 .eq(User::getId, user.getId()));
     }

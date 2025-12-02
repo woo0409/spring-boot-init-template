@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import top.sharehome.springbootinittemplate.common.base.R;
 import top.sharehome.springbootinittemplate.model.dto.ServicesDTO;
 import top.sharehome.springbootinittemplate.model.entity.ServicesDO;
+import top.sharehome.springbootinittemplate.model.vo.ServicesVO;
 import top.sharehome.springbootinittemplate.service.IntegralServicesService;
 import top.sharehome.springbootinittemplate.service.ServicesService;
 
@@ -23,7 +24,7 @@ public class ServiceController {
     }
 
     @PostMapping("/page")
-    public R<Page<ServicesDO>> page(@RequestBody ServicesDTO servicesDTO) {
+    public R<Page<ServicesVO>> page(@RequestBody ServicesDTO servicesDTO) {
         return R.ok(servicesService.getPage(servicesDTO));
     }
 

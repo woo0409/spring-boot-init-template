@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import top.sharehome.springbootinittemplate.model.dto.ServicesDTO;
 import top.sharehome.springbootinittemplate.model.entity.ServicesDO;
+import top.sharehome.springbootinittemplate.model.vo.ServicesVO;
 
 /**
  * <p>
@@ -17,5 +18,5 @@ public interface ServicesService extends IService<ServicesDO> {
 
     Boolean addOrUpdate(ServicesDTO servicesDO);
 
-    Page<ServicesDO> getPage(ServicesDTO servicesDTO);
+    Page<ServicesVO> getPage(ServicesDTO servicesDTO);
 }

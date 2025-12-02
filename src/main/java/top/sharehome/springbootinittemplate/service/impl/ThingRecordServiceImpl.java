@@ -1,26 +1,30 @@
 package top.sharehome.springbootinittemplate.service.impl;
 
 import cn.dev33.satoken.stp.StpUtil;
+import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.ObjUtil;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.annotation.Transient;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import top.sharehome.springbootinittemplate.convert.ThingConvert;
+import top.sharehome.springbootinittemplate.mapper.ThingRecordMapper;
 import top.sharehome.springbootinittemplate.model.dto.ThingDTO;
 import top.sharehome.springbootinittemplate.model.entity.ThingRecordDO;
-import top.sharehome.springbootinittemplate.mapper.ThingRecordMapper;
 import top.sharehome.springbootinittemplate.model.entity.ThingTypeDO;
 import top.sharehome.springbootinittemplate.model.entity.User;
+import top.sharehome.springbootinittemplate.model.vo.ThingRecordVO;
+import top.sharehome.springbootinittemplate.service.FileService;
 import top.sharehome.springbootinittemplate.service.ThingRecordService;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import org.springframework.stereotype.Service;
+import top.sharehome.springbootinittemplate.model.entity.File;
 import top.sharehome.springbootinittemplate.service.ThingTypeService;
 import top.sharehome.springbootinittemplate.service.UserService;
 
-import java.util.Arrays;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * <p>
@@ -36,6 +40,8 @@ public class ThingRecordServiceImpl extends ServiceImpl<ThingRecordMapper, Thing
     private UserService userService;
     @Autowired
     private ThingTypeService thingTypeService;
+    @Autowired
+    private FileService fileService;
 
 
     @Override
@@ -49,15 +55,32 @@ public class ThingRecordServiceImpl extends ServiceImpl<ThingRecordMapper, Thing
     }
 
     @Override
-    public Page<ThingRecordDO> page(ThingDTO thingDTO) {
-        // 创建分页对象，从thingDTO获取分页参数
-        Page<ThingRecordDO> page = new Page<>(thingDTO.getPage(), thingDTO.getSize());
+    public Page<ThingRecordVO> page(ThingDTO thingDTO) {
         // 执行分页查询
-        return this.page(page, new LambdaQueryWrapper<>(ThingRecordDO.class)
+        Page<ThingRecordDO> page = this.page(new Page<>(thingDTO.getPage(), thingDTO.getSize()), new LambdaQueryWrapper<>(ThingRecordDO.class)
                 .like(StrUtil.isNotBlank(thingDTO.getThingName()), ThingRecordDO::getThingName, thingDTO.getThingName())
                 .eq(ObjUtil.isNotEmpty(thingDTO.getTypeId()), ThingRecordDO::getThingType, thingDTO.getTypeId())
                 .eq(ObjUtil.isNotEmpty(thingDTO.getStatus()), ThingRecordDO::getStatus, thingDTO.getStatus())
                 .eq(ObjUtil.isNotEmpty(thingDTO.getUserId()), ThingRecordDO::getUserId, thingDTO.getUserId()));
+
+
+        List<Long> fileIds = page.getRecords().stream()
+                .map(ThingRecordDO::getSupportingMaterials)
+                .toList();
+
+        Map<Long, String> urlMap = new HashMap<>();
+        if (CollUtil.isNotEmpty(fileIds)) {
+            urlMap = fileService.listByIds(fileIds).stream()
+                    .collect(Collectors.toMap(File::getId, File::getUrl));
+        }
+
+        Page<ThingRecordVO> result = ThingConvert.INSTANCE.doToVo(page);
+        Map<Long, String> finalUrlMap = urlMap;
+        result.getRecords().forEach(record -> {
+            record.setThumb(finalUrlMap.getOrDefault(record.getSupportingMaterials(), ""));
+        });
+
+        return result;
     }
 
     @Override

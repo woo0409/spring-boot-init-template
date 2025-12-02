@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import top.sharehome.springbootinittemplate.model.dto.ThingDTO;
 import top.sharehome.springbootinittemplate.model.entity.ThingRecordDO;
 import com.baomidou.mybatisplus.extension.service.IService;
+import top.sharehome.springbootinittemplate.model.vo.ThingRecordVO;
 
 /**
  * <p>
@@ -16,7 +17,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 public interface ThingRecordService extends IService<ThingRecordDO> {
     Boolean addRecord(ThingRecordDO recordDO);
 
-    Page<ThingRecordDO> page(ThingDTO thingDTO);
+    Page<ThingRecordVO> page(ThingDTO thingDTO);
 
     Boolean thingAudit(Integer status, Long thingId);
 }

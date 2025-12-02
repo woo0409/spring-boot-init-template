@@ -61,7 +61,7 @@ public class ThingRecordDO implements Serializable {
     /**
      * 佐证材料
      */
-    private String supportingMaterials;
+    private Long supportingMaterials;
 
     /**
      * 所获得积分

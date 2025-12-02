@@ -1,9 +1,8 @@
-package top.sharehome.springbootinittemplate.model.dto;
+package top.sharehome.springbootinittemplate.model.vo;
 
 import com.baomidou.mybatisplus.annotation.*;
 import lombok.Getter;
 import lombok.Setter;
-import top.sharehome.springbootinittemplate.model.common.PageModel;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -18,7 +17,8 @@ import java.time.LocalDateTime;
  */
 @Getter
 @Setter
-public class ServicesDTO extends PageModel {
+public class ServicesVO {
+    @TableId(value = "id", type = IdType.AUTO)
     private Long id;
 
     /**
@@ -46,28 +46,16 @@ public class ServicesDTO extends PageModel {
      */
     private Integer remaining;
 
+
     /**
      * 文件id
      */
     private Long fileId;
 
-    /**
-     * 创建人
+     /**
+     * 图片url
      */
-    @TableField(fill = FieldFill.INSERT)
-    private String createBy;
-
-    /**
-     * 创建时间
-     */
-    @TableField(fill = FieldFill.INSERT)
-    private LocalDateTime createTime;
-
-    /**
-     * 更新时间
-     */
-    @TableField(fill = FieldFill.INSERT_UPDATE)
-    private LocalDateTime updateTime;
+     private String thumb;
 
     /**
      * 服务开始时间

@@ -25,7 +25,7 @@ public class File implements Serializable {
     /**
      * ID
      */
-    @TableId(value = "file_id", type = IdType.ASSIGN_ID)
+    @TableId(value = "file_id", type = IdType.AUTO)
     private Long id;
 
     /**

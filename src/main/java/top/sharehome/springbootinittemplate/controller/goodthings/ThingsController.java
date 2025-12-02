@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 import top.sharehome.springbootinittemplate.common.base.R;
 import top.sharehome.springbootinittemplate.model.dto.ThingDTO;
 import top.sharehome.springbootinittemplate.model.entity.ThingRecordDO;
+import top.sharehome.springbootinittemplate.model.vo.ThingRecordVO;
 import top.sharehome.springbootinittemplate.service.ThingRecordService;
 
 @RestController
@@ -25,7 +26,7 @@ public class ThingsController {
     }
 
     @PostMapping("/page")
-    public R<Page<ThingRecordDO>> page(@RequestBody ThingDTO thingDTO) {
+    public R<Page<ThingRecordVO>> page(@RequestBody ThingDTO thingDTO) {
         return R.ok(thingRecordService.page(thingDTO));
     }
 }
