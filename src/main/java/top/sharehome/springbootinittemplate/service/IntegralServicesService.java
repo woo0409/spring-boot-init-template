@@ -1,7 +1,10 @@
 package top.sharehome.springbootinittemplate.service;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import top.sharehome.springbootinittemplate.model.dto.IntegralServicesDTO;
 import top.sharehome.springbootinittemplate.model.entity.IntegralServicesDO;
 import com.baomidou.mybatisplus.extension.service.IService;
+import top.sharehome.springbootinittemplate.model.vo.IntegralServicesVO;
 
 /**
  * <p>
@@ -16,4 +19,8 @@ public interface IntegralServicesService extends IService<IntegralServicesDO> {
     Boolean exchange(Long serviceId);
 
     Boolean serviceAudit(Integer status, Long serviceId);
+
+    Page<IntegralServicesDO> getRecordPage(IntegralServicesDTO integralServicesDTO);
+
+    IntegralServicesVO record(Long id);
 }

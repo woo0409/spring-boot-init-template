@@ -39,6 +39,11 @@ public class IntegralServicesDO implements Serializable {
     private Long serviceId;
 
     /**
+     * 兑换服务名称
+     */
+    private String serviceName;
+
+    /**
      * 创建时间
      */
     @TableField(fill = FieldFill.INSERT)

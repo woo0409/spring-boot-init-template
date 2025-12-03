@@ -4,8 +4,11 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import top.sharehome.springbootinittemplate.common.base.R;
+import top.sharehome.springbootinittemplate.model.dto.IntegralServicesDTO;
 import top.sharehome.springbootinittemplate.model.dto.ServicesDTO;
+import top.sharehome.springbootinittemplate.model.entity.IntegralServicesDO;
 import top.sharehome.springbootinittemplate.model.entity.ServicesDO;
+import top.sharehome.springbootinittemplate.model.vo.IntegralServicesVO;
 import top.sharehome.springbootinittemplate.model.vo.ServicesVO;
 import top.sharehome.springbootinittemplate.service.IntegralServicesService;
 import top.sharehome.springbootinittemplate.service.ServicesService;
@@ -31,5 +34,15 @@ public class ServiceController {
     @GetMapping("/exchange/{serviceId}")
     public R<Boolean> exchange(@PathVariable("serviceId") Long serviceId) {
         return R.ok(integralServicesService.exchange(serviceId));
+    }
+
+    @PostMapping("/recordPage")
+    public R<Page<IntegralServicesDO>> recordPage(@RequestBody IntegralServicesDTO integralServicesDTO) {
+        return R.ok(integralServicesService.getRecordPage(integralServicesDTO));
+    }
+
+    @GetMapping("/record/{id}")
+    public R<IntegralServicesVO> record(@PathVariable("id") Long id) {
+        return R.ok(integralServicesService.record(id));
     }
 }

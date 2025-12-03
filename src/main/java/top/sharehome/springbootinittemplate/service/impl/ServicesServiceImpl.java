@@ -10,9 +10,9 @@ import org.springframework.stereotype.Service;
 import top.sharehome.springbootinittemplate.convert.ServiceConvert;
 import top.sharehome.springbootinittemplate.mapper.ServicesMapper;
 import top.sharehome.springbootinittemplate.model.dto.ServicesDTO;
+import top.sharehome.springbootinittemplate.model.entity.File;
 import top.sharehome.springbootinittemplate.model.entity.ServicesDO;
 import top.sharehome.springbootinittemplate.model.vo.ServicesVO;
-import top.sharehome.springbootinittemplate.model.entity.File;
 import top.sharehome.springbootinittemplate.service.FileService;
 import top.sharehome.springbootinittemplate.service.ServicesService;
 
@@ -33,7 +33,6 @@ import java.util.stream.Collectors;
 public class ServicesServiceImpl extends ServiceImpl<ServicesMapper, ServicesDO> implements ServicesService {
     @Autowired
     private FileService fileService;
-
 
     @Override
     public Boolean addOrUpdate(ServicesDTO servicesDTO) {
