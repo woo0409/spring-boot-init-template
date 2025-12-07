@@ -37,6 +37,11 @@ public class ServicesDTO extends PageModel {
     private Double serviceIntegral;
 
     /**
+     * 服务地区
+     */
+    private String serviceRegion;
+
+    /**
      * 总量
      */
     private Integer total;
@@ -55,7 +60,7 @@ public class ServicesDTO extends PageModel {
      * 创建人
      */
     @TableField(fill = FieldFill.INSERT)
-    private String createBy;
+    private Long createBy;
 
     /**
      * 创建时间
@@ -78,4 +83,9 @@ public class ServicesDTO extends PageModel {
      * 服务结束时间
      */
     private LocalDateTime endTime;
+
+    /**
+     * 是否仅自己可见
+     */
+    private Boolean selfOnly;
 }

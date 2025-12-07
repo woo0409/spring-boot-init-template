@@ -37,6 +37,11 @@ public class ServicesVO {
     private Double serviceIntegral;
 
     /**
+     * 服务地区
+     */
+    private String serviceRegion;
+
+    /**
      * 总量
      */
     private Integer total;

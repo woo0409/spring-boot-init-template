@@ -2,6 +2,7 @@ package top.sharehome.springbootinittemplate.service.impl;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.ObjUtil;
+import cn.hutool.core.util.ObjectUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -15,6 +16,7 @@ import top.sharehome.springbootinittemplate.model.entity.ServicesDO;
 import top.sharehome.springbootinittemplate.model.vo.ServicesVO;
 import top.sharehome.springbootinittemplate.service.FileService;
 import top.sharehome.springbootinittemplate.service.ServicesService;
+import top.sharehome.springbootinittemplate.utils.satoken.LoginUtils;
 
 import java.util.HashMap;
 import java.util.List;
@@ -37,6 +39,7 @@ public class ServicesServiceImpl extends ServiceImpl<ServicesMapper, ServicesDO>
     @Override
     public Boolean addOrUpdate(ServicesDTO servicesDTO) {
         servicesDTO.setRemaining(servicesDTO.getTotal());
+        servicesDTO.setCreateBy(LoginUtils.getLoginUserId());
         return this.saveOrUpdate(ServiceConvert.INSTANCE.dtoToDO(servicesDTO));
     }
 
@@ -47,7 +50,9 @@ public class ServicesServiceImpl extends ServiceImpl<ServicesMapper, ServicesDO>
 
         // 执行分页查询
         Page<ServicesVO> pageVo = ServiceConvert.INSTANCE.doToVo(this.page(page, new LambdaQueryWrapper<>(ServicesDO.class)
-                .like(ObjUtil.isNotEmpty(servicesDTO.getServiceName()), ServicesDO::getServiceName, servicesDTO.getServiceName())));
+                .like(ObjUtil.isNotEmpty(servicesDTO.getServiceName()), ServicesDO::getServiceName, servicesDTO.getServiceName())
+                .like(ObjUtil.isNotEmpty(servicesDTO.getServiceRegion()), ServicesDO::getServiceRegion, servicesDTO.getServiceRegion())
+                .eq(ObjectUtil.isNotEmpty(servicesDTO.getSelfOnly()) && servicesDTO.getSelfOnly(), ServicesDO::getCreateBy, LoginUtils.getLoginUserId())));
 
         List<Long> fileIds = pageVo.getRecords().stream().map(ServicesVO::getFileId).toList();
         Map<Long, String> urlMap = new HashMap<>();

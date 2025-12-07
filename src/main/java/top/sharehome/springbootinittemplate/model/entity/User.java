@@ -100,6 +100,11 @@ public class User implements Serializable {
      */
     private Double integral;
 
+    /**
+     * 手机号
+     */
+    private String phone;
+
     @Serial
     private static final long serialVersionUID = -5943787044496569074L;
 
