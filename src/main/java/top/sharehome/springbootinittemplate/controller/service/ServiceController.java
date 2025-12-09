@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import top.sharehome.springbootinittemplate.common.base.R;
+import top.sharehome.springbootinittemplate.model.dto.CommentDTO;
 import top.sharehome.springbootinittemplate.model.dto.IntegralServicesDTO;
 import top.sharehome.springbootinittemplate.model.dto.ServicesDTO;
 import top.sharehome.springbootinittemplate.model.entity.IntegralServicesDO;
@@ -44,5 +45,10 @@ public class ServiceController {
     @GetMapping("/record/{id}")
     public R<IntegralServicesVO> record(@PathVariable("id") Long id) {
         return R.ok(integralServicesService.record(id));
+    }
+
+    @PostMapping("/comment")
+    public R<Boolean> comment(@RequestBody CommentDTO commentDTO) {
+        return R.ok(integralServicesService.comment(commentDTO));
     }
 }

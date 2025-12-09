@@ -8,6 +8,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import top.sharehome.springbootinittemplate.convert.ServiceConvert;
+import top.sharehome.springbootinittemplate.model.dto.CommentDTO;
 import top.sharehome.springbootinittemplate.model.dto.IntegralServicesDTO;
 import top.sharehome.springbootinittemplate.model.entity.IntegralServicesDO;
 import top.sharehome.springbootinittemplate.mapper.IntegralServicesMapper;
@@ -90,7 +91,8 @@ public class IntegralServicesServiceImpl extends ServiceImpl<IntegralServicesMap
         // 执行分页查询
         Page<IntegralServicesDO> pageVo = this.page(page, new LambdaQueryWrapper<>(IntegralServicesDO.class)
                 .like(ObjUtil.isNotEmpty(integralServicesDTO.getServiceName()), IntegralServicesDO::getServiceName, integralServicesDTO.getServiceName())
-                .eq(ObjectUtil.isNotEmpty(integralServicesDTO.getStatus()), IntegralServicesDO::getStatus, integralServicesDTO.getStatus()));
+                .eq(ObjectUtil.isNotEmpty(integralServicesDTO.getStatus()), IntegralServicesDO::getStatus, integralServicesDTO.getStatus())
+                .eq(ObjectUtil.isNotEmpty(integralServicesDTO.getSelfOnly()) && integralServicesDTO.getSelfOnly(), IntegralServicesDO::getUserId, LoginUtils.getLoginUserId()));
 
         return pageVo;
     }
@@ -102,5 +104,16 @@ public class IntegralServicesServiceImpl extends ServiceImpl<IntegralServicesMap
         Double integral = userService.getById(integralServicesDO.getUserId()).getIntegral();
         integralServicesVO.setUserIntegral(integral);
         return integralServicesVO;
+    }
+
+    @Override
+    public Boolean comment(CommentDTO commentDTO) {
+        IntegralServicesDO integralServicesDO = Optional.ofNullable(this.getById(commentDTO.getId()))
+                .orElseThrow(() -> new RuntimeException("服务不存在"));
+
+        integralServicesDO.setComment(commentDTO.getComment());
+        integralServicesDO.setStatus(StatusEnum.COMPLETE.getCode());
+
+        return this.updateById(integralServicesDO);
     }
 }

@@ -54,4 +54,9 @@ public class IntegralServicesVO {
      * 花费积分
      */
     private Double integral;
+
+    /**
+     * 评论
+     */
+    private String comment;
 }

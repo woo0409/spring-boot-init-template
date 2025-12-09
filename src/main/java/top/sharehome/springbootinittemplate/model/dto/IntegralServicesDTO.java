@@ -50,4 +50,14 @@ public class IntegralServicesDTO extends PageModel {
      * 花费积分
      */
     private Double integral;
+
+    /**
+     * 评论
+     */
+    private String comment;
+
+    /**
+     * 是否仅自己可见
+     */
+    private Boolean selfOnly;
 }

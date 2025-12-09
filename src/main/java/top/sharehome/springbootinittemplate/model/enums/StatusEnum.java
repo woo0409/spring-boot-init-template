@@ -9,6 +9,7 @@ public enum StatusEnum {
     AUDITING(1, "审核中"),
     AUDIT_FAIL(2, "审核失败"),
     AUDIT_SUCCESS(3, "审核通过"),
+    COMPLETE(4, "完成"),
     ;
 
     private final int code;
