@@ -20,4 +20,6 @@ public interface ThingRecordService extends IService<ThingRecordDO> {
     Page<ThingRecordVO> page(ThingDTO thingDTO);
 
     Boolean thingAudit(Integer status, Long thingId);
+
+    Page<ThingRecordVO> getMyRecord(ThingDTO thingDTO);
 }

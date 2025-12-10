@@ -59,6 +59,11 @@ public class AuthLoginVo implements Serializable {
      */
     private Double integral;
 
+    /**
+     * 手机号
+     */
+    private String phone;
+
     @Serial
     private static final long serialVersionUID = 3559885844441381994L;
 

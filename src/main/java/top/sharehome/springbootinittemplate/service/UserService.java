@@ -113,4 +113,6 @@ public interface UserService extends IService<User> {
      * @param file 用户信息表文件
      */
     void importUser(MultipartFile file);
+
+    void updatePhone(String newPhone);
 }

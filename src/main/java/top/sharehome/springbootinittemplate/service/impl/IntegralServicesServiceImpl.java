@@ -92,7 +92,8 @@ public class IntegralServicesServiceImpl extends ServiceImpl<IntegralServicesMap
         Page<IntegralServicesDO> pageVo = this.page(page, new LambdaQueryWrapper<>(IntegralServicesDO.class)
                 .like(ObjUtil.isNotEmpty(integralServicesDTO.getServiceName()), IntegralServicesDO::getServiceName, integralServicesDTO.getServiceName())
                 .eq(ObjectUtil.isNotEmpty(integralServicesDTO.getStatus()), IntegralServicesDO::getStatus, integralServicesDTO.getStatus())
-                .eq(ObjectUtil.isNotEmpty(integralServicesDTO.getSelfOnly()) && integralServicesDTO.getSelfOnly(), IntegralServicesDO::getUserId, LoginUtils.getLoginUserId()));
+                .eq(ObjectUtil.isNotEmpty(integralServicesDTO.getSelfOnly()) && integralServicesDTO.getSelfOnly(), IntegralServicesDO::getUserId, LoginUtils.getLoginUserId())
+                .orderByAsc(IntegralServicesDO::getStatus));
 
         return pageVo;
     }
@@ -113,6 +114,7 @@ public class IntegralServicesServiceImpl extends ServiceImpl<IntegralServicesMap
 
         integralServicesDO.setComment(commentDTO.getComment());
         integralServicesDO.setStatus(StatusEnum.COMPLETE.getCode());
+        integralServicesDO.setScore(commentDTO.getScore());
 
         return this.updateById(integralServicesDO);
     }

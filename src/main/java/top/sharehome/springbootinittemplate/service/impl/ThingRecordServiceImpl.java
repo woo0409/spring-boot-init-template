@@ -16,12 +16,14 @@ import top.sharehome.springbootinittemplate.model.dto.ThingDTO;
 import top.sharehome.springbootinittemplate.model.entity.ThingRecordDO;
 import top.sharehome.springbootinittemplate.model.entity.ThingTypeDO;
 import top.sharehome.springbootinittemplate.model.entity.User;
+import top.sharehome.springbootinittemplate.model.enums.StatusEnum;
 import top.sharehome.springbootinittemplate.model.vo.ThingRecordVO;
 import top.sharehome.springbootinittemplate.service.FileService;
 import top.sharehome.springbootinittemplate.service.ThingRecordService;
 import top.sharehome.springbootinittemplate.model.entity.File;
 import top.sharehome.springbootinittemplate.service.ThingTypeService;
 import top.sharehome.springbootinittemplate.service.UserService;
+import top.sharehome.springbootinittemplate.utils.satoken.LoginUtils;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -61,7 +63,8 @@ public class ThingRecordServiceImpl extends ServiceImpl<ThingRecordMapper, Thing
                 .like(StrUtil.isNotBlank(thingDTO.getThingName()), ThingRecordDO::getThingName, thingDTO.getThingName())
                 .eq(ObjUtil.isNotEmpty(thingDTO.getTypeId()), ThingRecordDO::getThingType, thingDTO.getTypeId())
                 .eq(ObjUtil.isNotEmpty(thingDTO.getStatus()), ThingRecordDO::getStatus, thingDTO.getStatus())
-                .eq(ObjUtil.isNotEmpty(thingDTO.getUserId()), ThingRecordDO::getUserId, thingDTO.getUserId()));
+                .eq(ObjUtil.isNotEmpty(thingDTO.getUserId()), ThingRecordDO::getUserId, thingDTO.getUserId())
+                .eq(ObjUtil.isNotEmpty(thingDTO.getSelfOnly()) && thingDTO.getSelfOnly(), ThingRecordDO::getUserId, LoginUtils.getLoginUserId()));
 
 
         List<Long> fileIds = page.getRecords().stream()
@@ -105,6 +108,17 @@ public class ThingRecordServiceImpl extends ServiceImpl<ThingRecordMapper, Thing
         }
 
         return this.updateById(record);
+    }
+
+    @Override
+    public Page<ThingRecordVO> getMyRecord(ThingDTO thingDTO) {
+        Page<ThingRecordDO> page = this.page(new Page<>(thingDTO.getPage(), thingDTO.getSize()), new LambdaQueryWrapper<>(ThingRecordDO.class)
+                .eq(ThingRecordDO::getUserId, LoginUtils.getLoginUserId())
+                .eq(ThingRecordDO::getStatus, StatusEnum.AUDIT_SUCCESS.getCode())
+        );
+
+
+        return ThingConvert.INSTANCE.doToVo(page);
     }
 
     /**

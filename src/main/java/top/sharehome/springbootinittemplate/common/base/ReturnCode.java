@@ -69,6 +69,11 @@ public enum ReturnCode {
     NEW_EMAIL_AND_OLD_EMAIL_ARE_SAME(11006, "新旧邮箱相同"),
 
     /**
+     * 新旧邮箱相同 11007
+     */
+    NEW_PHONE_AND_OLD_PHONE_ARE_SAME(11007, "新旧手机号相同"),
+
+    /**
      * 密码校验失败 11007
      */
     PASSWORD_VERIFICATION_FAILED(11007, "密码校验失败"),

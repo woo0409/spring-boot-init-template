@@ -3,10 +3,7 @@ package top.sharehome.springbootinittemplate.controller.goodthings;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import top.sharehome.springbootinittemplate.common.base.R;
 import top.sharehome.springbootinittemplate.model.dto.ThingDTO;
 import top.sharehome.springbootinittemplate.model.entity.ThingRecordDO;
@@ -28,5 +25,10 @@ public class ThingsController {
     @PostMapping("/page")
     public R<Page<ThingRecordVO>> page(@RequestBody ThingDTO thingDTO) {
         return R.ok(thingRecordService.page(thingDTO));
+    }
+
+    @PostMapping("/getMyRecord")
+    public R<Page<ThingRecordVO>> getMyRecord(@RequestBody ThingDTO thingDTO) {
+        return R.ok(thingRecordService.getMyRecord(thingDTO));
     }
 }

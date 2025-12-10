@@ -7,4 +7,6 @@ public class CommentDTO {
     private Long id;
 
     private String comment;
+
+    private Integer score;
 }

@@ -77,8 +77,9 @@ public class AuthServiceImpl extends ServiceImpl<UserMapper, User> implements Au
                 .setName(authRegisterDto.getPhone())
                 .setPassword(authRegisterDto.getPassword())
                 .setEmail(authRegisterDto.getEmail())
+                .setPhone(authRegisterDto.getPhone())
                 // 在没有激活账号的情况下禁用账号
-                .setState(1);
+                .setState(0);
         int insertResult = userMapper.insert(user);
         if (insertResult == 0) {
             throw new CustomizeReturnException(ReturnCode.ERRORS_OCCURRED_IN_THE_DATABASE_SERVICE);

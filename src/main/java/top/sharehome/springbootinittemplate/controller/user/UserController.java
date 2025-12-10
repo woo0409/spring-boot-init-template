@@ -249,6 +249,23 @@ public class UserController {
     }
 
     /**
+     * 用户更新手机号
+     *
+     * @param UserUpdatePhoneDto 用户更新邮箱Dto类
+     * @return 返回更新结果
+     */
+    @PutMapping("/update/phone")
+    @ControllerLog(description = "用户更新自身手机号", operator = Operator.UPDATE)
+    @SaCheckRole(value = {Constants.ROLE_ADMIN, Constants.ROLE_USER}, mode = SaMode.OR)
+    public R<String> updateEmail(@RequestBody @Validated(PutGroup.class) UserUpdatePhoneDto userUpdatePhoneDto) {
+        if (StringUtils.equals(LoginUtils.getLoginUserOrThrow().getEmail(), userUpdatePhoneDto.getNewPhone())) {
+            throw new CustomizeReturnException(ReturnCode.NEW_PHONE_AND_OLD_PHONE_ARE_SAME);
+        }
+        userService.updatePhone(userUpdatePhoneDto.getNewPhone());
+        return R.ok("更新手机号成功");
+    }
+
+    /**
      * 用户更新密码
      *
      * @param userUpdatePasswordDto 用户更新密码Dto类

@@ -74,4 +74,9 @@ public class IntegralServicesDO implements Serializable {
      * 评论
      */
     private String comment;
+
+    /**
+     * 评分
+     */
+    private Integer score;
 }

@@ -18,4 +18,5 @@ public class ThingDTO extends PageModel {
     @Schema(description = "用户Id")
     private Long userId;
 
+    private Boolean selfOnly;
 }

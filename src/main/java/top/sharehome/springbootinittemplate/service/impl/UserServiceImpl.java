@@ -386,4 +386,17 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
             throw new CustomizeReturnException(ReturnCode.EXCEL_FILE_ERROR, "读取用户信息文件出错");
         }
     }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void updatePhone(String newPhone) {
+        LambdaUpdateWrapper<User> userLambdaUpdateWrapper = new LambdaUpdateWrapper<>();
+        userLambdaUpdateWrapper.set(User::getPhone, newPhone);
+        userLambdaUpdateWrapper.eq(User::getId, LoginUtils.getLoginUserIdOrThrow());
+        int updateResult = userMapper.update(userLambdaUpdateWrapper);
+        if (updateResult == 0) {
+            throw new CustomizeReturnException(ReturnCode.ERRORS_OCCURRED_IN_THE_DATABASE_SERVICE);
+        }
+        LoginUtils.syncLoginUser();
+    }
 }
