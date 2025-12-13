@@ -71,4 +71,14 @@ public class ServicesVO {
      * 服务结束时间
      */
     private LocalDateTime endTime;
+
+    /**
+     * 创建人
+     */
+    private Long createBy;
+
+    /**
+     * 创建人姓名
+     */
+    private String createByName;
 }

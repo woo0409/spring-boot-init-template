@@ -26,4 +26,8 @@ public interface IntegralServicesService extends IService<IntegralServicesDO> {
     IntegralServicesVO record(Long id);
 
     Boolean comment(CommentDTO commentDTO);
+
+    Boolean deleteService(Long id);
+
+    Boolean cancelService(Long id);
 }

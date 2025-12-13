@@ -1,10 +1,12 @@
 package top.sharehome.springbootinittemplate.service.impl;
 
+import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.ObjUtil;
 import cn.hutool.core.util.ObjectUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import org.apache.zookeeper.Login;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import top.sharehome.springbootinittemplate.convert.ServiceConvert;
@@ -24,6 +26,7 @@ import top.sharehome.springbootinittemplate.service.ServicesService;
 import top.sharehome.springbootinittemplate.service.UserService;
 import top.sharehome.springbootinittemplate.utils.satoken.LoginUtils;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -117,5 +120,36 @@ public class IntegralServicesServiceImpl extends ServiceImpl<IntegralServicesMap
         integralServicesDO.setScore(commentDTO.getScore());
 
         return this.updateById(integralServicesDO);
+    }
+
+
+    @Override
+    public Boolean deleteService(Long id) {
+        List<IntegralServicesDO> list = list(Wrappers.<IntegralServicesDO>lambdaQuery()
+                .eq(IntegralServicesDO::getServiceId, id));
+        if (CollUtil.isNotEmpty(list)) {
+            throw new RuntimeException("已有用户兑换此服务，请联系用户主动取消服务");
+        }
+
+        return servicesService.removeById(id);
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public Boolean cancelService(Long id) {
+        IntegralServicesDO integralServicesDO = this.getById(id);
+        Long serviceId = integralServicesDO.getServiceId();
+        Long userId = integralServicesDO.getUserId();
+        if (!this.removeById(integralServicesDO)) {
+            return false;
+        }
+
+        ServicesDO servicesDO = servicesService.getById(serviceId);
+        User user = userService.getById(userId);
+
+        servicesDO.setRemaining(servicesDO.getRemaining() + 1);
+        user.setIntegral(user.getIntegral() + servicesDO.getServiceIntegral());
+
+        return servicesService.updateById(servicesDO) & userService.updateById(user);
     }
 }

@@ -51,4 +51,14 @@ public class ServiceController {
     public R<Boolean> comment(@RequestBody CommentDTO commentDTO) {
         return R.ok(integralServicesService.comment(commentDTO));
     }
+
+    @GetMapping("/delete")
+    public R<Boolean> deleteService(@RequestParam("id") Long id) {
+        return R.ok(integralServicesService.deleteService(id));
+    }
+
+    @GetMapping("/cancel")
+    public R<Boolean> cancelService(@RequestParam("id") Long id) {
+        return R.ok(integralServicesService.cancelService(id));
+    }
 }

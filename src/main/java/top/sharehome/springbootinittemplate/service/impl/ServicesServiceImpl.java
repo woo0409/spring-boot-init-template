@@ -15,6 +15,7 @@ import top.sharehome.springbootinittemplate.model.entity.File;
 import top.sharehome.springbootinittemplate.model.entity.ServicesDO;
 import top.sharehome.springbootinittemplate.model.vo.ServicesVO;
 import top.sharehome.springbootinittemplate.service.FileService;
+import top.sharehome.springbootinittemplate.service.IntegralServicesService;
 import top.sharehome.springbootinittemplate.service.ServicesService;
 import top.sharehome.springbootinittemplate.utils.satoken.LoginUtils;
 
@@ -55,6 +56,9 @@ public class ServicesServiceImpl extends ServiceImpl<ServicesMapper, ServicesDO>
                 .eq(ObjectUtil.isNotEmpty(servicesDTO.getSelfOnly()) && servicesDTO.getSelfOnly(), ServicesDO::getCreateBy, LoginUtils.getLoginUserId())));
 
         List<Long> fileIds = pageVo.getRecords().stream().map(ServicesVO::getFileId).toList();
+        List<Long> userId = pageVo.getRecords().stream().map(ServicesVO::getCreateBy).toList();
+        Map<Long, String> userNameMap = LoginUtils.getUserNameMap(userId);
+
         Map<Long, String> urlMap = new HashMap<>();
         if (CollUtil.isNotEmpty(fileIds)) {
             urlMap = fileService.listByIds(fileIds).stream()
@@ -62,7 +66,10 @@ public class ServicesServiceImpl extends ServiceImpl<ServicesMapper, ServicesDO>
         }
 
         Map<Long, String> finalUrlMap = urlMap;
-        pageVo.getRecords().forEach(item -> item.setThumb(finalUrlMap.getOrDefault(item.getFileId(), "")));
+        pageVo.getRecords().forEach(item -> {
+            item.setThumb(finalUrlMap.getOrDefault(item.getFileId(), ""));
+            item.setCreateByName(userNameMap.getOrDefault(item.getCreateBy(), ""));
+        });
 
         return pageVo;
     }

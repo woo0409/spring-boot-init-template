@@ -15,7 +15,10 @@ import top.sharehome.springbootinittemplate.model.vo.auth.AuthLoginVo;
 import top.sharehome.springbootinittemplate.service.AuthService;
 import top.sharehome.springbootinittemplate.service.FileService;
 
+import java.util.Collection;
+import java.util.Map;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 /**
  * 登录鉴权工具类
@@ -180,4 +183,9 @@ public class LoginUtils {
         StpUtil.logout();
     }
 
+    public static Map<Long, String> getUserNameMap(Collection<Long> userIds) {
+        return AUTH_SERVICE.listByIds(userIds)
+                .stream()
+                .collect(Collectors.toMap(User::getId, User::getAccount));
+    }
 }
