@@ -29,6 +29,11 @@ public class FieldMetaObjectHandler implements MetaObjectHandler {
     public static final String CREATE_TIME = "createTime";
 
     /**
+     * 需要处理的字段名——sendTime
+     */
+    public static final String SEND_TIME = "sendTime";
+
+    /**
      * 需要处理的字段名——delete
      */
     public static final String DELETED = "deleted";
@@ -55,6 +60,10 @@ public class FieldMetaObjectHandler implements MetaObjectHandler {
 
         if (metaObject.hasSetter(CREATE_TIME)) {
             metaObject.setValue(CREATE_TIME, LocalDateTime.now());
+        }
+
+        if (metaObject.hasSetter(SEND_TIME)) {
+            metaObject.setValue(SEND_TIME, LocalDateTime.now());
         }
 
         if (metaObject.hasSetter(DELETED)) {

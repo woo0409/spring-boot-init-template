@@ -2,6 +2,7 @@ package top.sharehome.springbootinittemplate.utils.satoken;
 
 import cn.dev33.satoken.context.SaHolder;
 import cn.dev33.satoken.stp.StpUtil;
+import cn.hutool.core.collection.CollUtil;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.BeanUtils;
@@ -16,6 +17,7 @@ import top.sharehome.springbootinittemplate.service.AuthService;
 import top.sharehome.springbootinittemplate.service.FileService;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -184,6 +186,10 @@ public class LoginUtils {
     }
 
     public static Map<Long, String> getUserNameMap(Collection<Long> userIds) {
+        if (CollUtil.isEmpty(userIds)) {
+            return Collections.emptyMap();
+        }
+
         return AUTH_SERVICE.listByIds(userIds)
                 .stream()
                 .collect(Collectors.toMap(User::getId, User::getAccount));
