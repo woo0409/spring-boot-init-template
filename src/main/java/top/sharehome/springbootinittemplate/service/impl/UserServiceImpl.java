@@ -25,6 +25,7 @@ import top.sharehome.springbootinittemplate.model.entity.User;
 import top.sharehome.springbootinittemplate.model.vo.auth.AuthLoginVo;
 import top.sharehome.springbootinittemplate.model.vo.user.UserExportVo;
 import top.sharehome.springbootinittemplate.model.vo.user.UserPageVo;
+import top.sharehome.springbootinittemplate.model.vo.user.UserIntegralStatisticsVo;
 import top.sharehome.springbootinittemplate.service.UserService;
 import top.sharehome.springbootinittemplate.utils.document.excel.ExcelUtils;
 import top.sharehome.springbootinittemplate.utils.oss.minio.MinioUtils;
@@ -398,5 +399,57 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
             throw new CustomizeReturnException(ReturnCode.ERRORS_OCCURRED_IN_THE_DATABASE_SERVICE);
         }
         LoginUtils.syncLoginUser();
+    }
+
+    @Override
+    public UserIntegralStatisticsVo getIntegralStatistics() {
+        // 查询所有未删除的用户
+        List<User> users = userMapper.selectList(new LambdaQueryWrapper<User>()
+                .eq(User::getDeleted, 0));
+
+        // 计算统计信息
+        long totalUsers = users.size();
+        double totalIntegral = users.stream()
+                .filter(u -> u.getIntegral() != null)
+                .mapToDouble(User::getIntegral)
+                .sum();
+
+        double averageIntegral = totalUsers > 0 ? totalIntegral / totalUsers : 0.0;
+        double maxIntegral = users.stream()
+                .filter(u -> u.getIntegral() != null)
+                .mapToDouble(User::getIntegral)
+                .max()
+                .orElse(0.0);
+
+        // 排序获取前10名
+        List<User> rankedUsers = users.stream()
+                .filter(u -> u.getIntegral() != null)
+                .sorted((u1, u2) -> Double.compare(u2.getIntegral(), u1.getIntegral()))
+                .limit(10)
+                .toList();
+
+        // 构建排行榜
+        List<UserIntegralStatisticsVo.IntegralRankItem> rankList = new java.util.ArrayList<>();
+        for (int i = 0; i < rankedUsers.size(); i++) {
+            User user = rankedUsers.get(i);
+            UserIntegralStatisticsVo.IntegralRankItem item = new UserIntegralStatisticsVo.IntegralRankItem();
+            item.setUserId(user.getId());
+            item.setAccount(user.getAccount());
+            item.setName(user.getName());
+            item.setAvatar(null); // TODO: 需要通过File表查询头像URL
+            item.setIntegral(user.getIntegral());
+            item.setRank(i + 1);
+            rankList.add(item);
+        }
+
+        // 构建统计结果
+        UserIntegralStatisticsVo statistics = new UserIntegralStatisticsVo();
+        statistics.setTotalUsers(totalUsers);
+        statistics.setTotalIntegral(totalIntegral);
+        statistics.setAverageIntegral(averageIntegral);
+        statistics.setMaxIntegral(maxIntegral);
+        statistics.setRankList(rankList);
+
+        return statistics;
     }
 }

@@ -23,6 +23,7 @@ import top.sharehome.springbootinittemplate.model.common.PageModel;
 import top.sharehome.springbootinittemplate.model.dto.user.*;
 import top.sharehome.springbootinittemplate.model.vo.user.UserExportVo;
 import top.sharehome.springbootinittemplate.model.vo.user.UserPageVo;
+import top.sharehome.springbootinittemplate.model.vo.user.UserIntegralStatisticsVo;
 import top.sharehome.springbootinittemplate.service.UserService;
 import top.sharehome.springbootinittemplate.utils.document.excel.ExcelUtils;
 import top.sharehome.springbootinittemplate.utils.satoken.LoginUtils;
@@ -306,5 +307,18 @@ public class UserController {
         }
         userService.updateAvatar(file);
         return R.ok("更新头像成功");
+    }
+
+    /**
+     * 获取用户积分统计
+     *
+     * @return 积分统计信息
+     */
+    @GetMapping("/integral/statistics")
+    @ControllerLog(description = "获取用户积分统计", operator = Operator.QUERY)
+    @SaCheckRole(value = {Constants.ROLE_ADMIN, Constants.ROLE_USER}, mode = SaMode.OR)
+    public R<UserIntegralStatisticsVo> getIntegralStatistics() {
+        UserIntegralStatisticsVo statistics = userService.getIntegralStatistics();
+        return R.ok(statistics);
     }
 }

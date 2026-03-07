@@ -115,4 +115,11 @@ public interface UserService extends IService<User> {
     void importUser(MultipartFile file);
 
     void updatePhone(String newPhone);
+
+    /**
+     * 获取用户积分统计
+     *
+     * @return 积分统计信息
+     */
+    top.sharehome.springbootinittemplate.model.vo.user.UserIntegralStatisticsVo getIntegralStatistics();
 }
