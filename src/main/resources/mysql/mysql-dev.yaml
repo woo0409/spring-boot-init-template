@@ -12,7 +12,7 @@ dataSources:
     driverClassName: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://124.220.216.98:3306/init_db?serverZoneId=Asia/Shanghai&useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&useSSL=false&allowPublicKeyRetrieval=true&rewriteBatchedStatements=true
     username: root
-    password: v20034.9.
+    password: russia123
 #  # 从库在需要时开启
 #  ds_slave:
 #    dataSourceClassName: com.zaxxer.hikari.HikariDataSource
