@@ -95,6 +95,11 @@ public interface Constants {
     String ROLE_USER = "user";
 
     /**
+     * 用户角色auditor（审核员）
+     */
+    String ROLE_AUDITOR = "auditor";
+
+    /**
      * 只包含数字和英文的正则表达式
      */
     String REGEX_NUMBER_AND_LETTER_STR = "^[0-9a-zA-Z]+$";

@@ -3,6 +3,7 @@ package top.sharehome.springbootinittemplate.config.log.aop;
 import com.alibaba.fastjson2.JSON;
 import com.alibaba.fastjson2.TypeReference;
 import com.alibaba.ttl.TransmittableThreadLocal;
+import jakarta.annotation.PostConstruct;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
@@ -46,11 +47,6 @@ import java.util.concurrent.TimeUnit;
 @Aspect
 @Slf4j
 public class ControllerLogAop {
-
-    /**
-     * 获取LogMapper
-     */
-    private static final LogMapper LOG_MAPPER = SpringContextHolder.getBean(LogMapper.class);
 
     /**
      * 系统默认屏蔽的请求/响应字段
@@ -194,7 +190,7 @@ public class ControllerLogAop {
             long time = stopWatch.getDuration().toMillis();
             log.setTime(time);
             // 插入数据库
-            LOG_MAPPER.insert(log);
+            SpringContextHolder.getBean(LogMapper.class).insert(log);
         } catch (Exception exception) {
             log.error("记录正常日志记录报错：{}", exception.getMessage());
             exception.printStackTrace();
@@ -302,7 +298,7 @@ public class ControllerLogAop {
             long time = stopWatch.getTime(TimeUnit.NANOSECONDS);
             log.setTime(time);
             // 插入数据库
-            LOG_MAPPER.insert(log);
+            SpringContextHolder.getBean(LogMapper.class).insert(log);
         } catch (Exception exception) {
             log.error("记录异常日志记录报错：{}", exception.getMessage());
             exception.printStackTrace();
