@@ -1,5 +1,6 @@
 package top.sharehome.springbootinittemplate.controller;
 
+import cn.dev33.satoken.annotation.SaCheckLogin;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import top.sharehome.springbootinittemplate.common.base.R;
@@ -14,6 +15,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/chat")
+@SaCheckLogin
 @RequiredArgsConstructor
 public class ChatController {
 

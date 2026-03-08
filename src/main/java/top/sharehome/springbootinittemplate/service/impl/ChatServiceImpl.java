@@ -115,6 +115,12 @@ public class ChatServiceImpl implements top.sharehome.springbootinittemplate.ser
      * 约定：userA 永远是 min(userId)，userB 永远是 max(userId)
      */
     private Long getOrCreateConversationId(Long me, Long peer) {
+        if (me == null) {
+            throw new IllegalStateException("用户未登录");
+        }
+        if (peer == null) {
+            throw new IllegalArgumentException("peerId 不能为空");
+        }
         long a = Math.min(me, peer);
         long b = Math.max(me, peer);
 

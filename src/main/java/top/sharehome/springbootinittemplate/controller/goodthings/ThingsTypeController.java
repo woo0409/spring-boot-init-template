@@ -1,5 +1,6 @@
 package top.sharehome.springbootinittemplate.controller.goodthings;
 
+import cn.hutool.core.util.ObjUtil;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +23,7 @@ public class ThingsTypeController {
     @PostMapping("/addOrUpdate")
     @Operation(summary = "添加/更新类型")
     public R<String> addOrUpdateType(@RequestBody ThingTypeDO thingTypeDO) {
-        if (Objects.equals(thingTypeDO.getId(), thingTypeDO.getParentId())) {
+        if (ObjUtil.isNotEmpty(thingTypeDO.getId()) && Objects.equals(thingTypeDO.getId(), thingTypeDO.getParentId())) {
             return R.ok("添加成功");
         }
         return thingTypeService.saveOrUpdate(thingTypeDO) ? R.ok("添加成功") : R.fail("添加失败");
